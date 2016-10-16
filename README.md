@@ -12,7 +12,7 @@ Here's some sample code you can use to get information about your cellular conne
 
 It also can test ping and DNS using the functions in the cellular modem. And it can test connecting to the Particle cloud.
 
-![Serial Terminal Example](screen.png)
+![Serial Terminal Example](doc/screen.png)
 
 It can sometimes also get information about neighboring cell sites. That works for me on 2G (G350) but not 3G (U260) but I'm not sure why. You might see something like this:
 

@@ -1,0 +1,8 @@
+{
+  "name": "CellularHelper",
+  "author": "rickkas7",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Class for querying information directly from the u-blox SARA modem"
+}
+
