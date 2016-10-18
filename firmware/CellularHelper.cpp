@@ -1,12 +1,16 @@
 #include "Particle.h"
+#include "application.h"
+#include "stdarg.h"
 
+#ifndef CELLULARHELPER
+#define CELLULARHELPER
+
+// Create platform defines for Particle devices
+// #ifdef PARTICLE_ELECTRON
 #include "CellularHelper.h"
 
 // Updates to this code are here:
 // https://github.com/rickkas7/electron_cellular
-
-CellularHelperClass CellularHelper;
-
 
 String CellularHelperClass::getOperatorName(int operatorNameType) const {
 	String result;
@@ -30,9 +34,10 @@ String CellularHelperClass::getOperatorName(int operatorNameType) const {
 CellularHelperRSSIQualResponse CellularHelperClass::getRSSIQual() const {
 	CellularHelperRSSIQualResponse resp;
 	plusStringResponseCommand(resp, DEFAULT_TIMEOUT, "AT+CSQ\r\n");
-
 	if (resp.result == RESP_OK) {
-		if (sscanf(resp.string.c_str(), "%d,%d", &resp.rssi, &resp.qual) != 2) {
+		if (sscanf(resp.string.c_str(), "%d,%d", &resp.rssi, &resp.qual) == 2) {
+			resp.rssi = 2 * resp.rssi - 113; // 0: -113 1: -111 ... 30: -53 dBm with 2 dBm steps
+		} else {
 			// Failed to parse result
 			resp.result = RESP_ERROR;
 		}
@@ -234,6 +239,7 @@ String CellularHelperPlusStringResponse::getDoubleQuotedPart() const {
 
 
 void CellularHelperEnvironmentCellData::parse(const char *str) {
+
 	char *mutableCopy = strdup(str);
 
 	char *pair = strtok(mutableCopy, ",");
@@ -273,7 +279,7 @@ void CellularHelperEnvironmentCellData::addKeyValue(const char *key, const char 
 	}
 	else
 	if (strcmp(key, "LAC") == 0) {
-		mnc = (int) strtol(value, NULL, 16); // hex
+		lac = (int) strtol(value, NULL, 16); // hex
 	}
 	else
 	if (strcmp(key, "CI") == 0) {
@@ -450,5 +456,5 @@ void CellularHelperEnvironmentResponse::serialDebug() const {
 
 }
 
-
-
+//#endif // PARTICLE_ELECTRON
+#endif // CELLULARHELPER

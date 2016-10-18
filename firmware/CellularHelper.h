@@ -1,8 +1,28 @@
-#ifndef __CELLULARHELPER_H
-#define __CELLULARHELPER_H
-
 #include "Particle.h"
+#include "application.h"
 
+#ifndef CELLULARHELPER_H
+#define CELLULARHELPER_H
+
+#ifdef SPARK
+
+// Create platform defines for Particle devices
+#if PLATFORM_ID == 626
+#define PARTICLE_ELECTRON
+#define PARTICLE_PHOTONELECTRON
+#elif PLATFORM_ID == 6
+#define PARTICLE_PHOTON
+#define PARTICLE_PHOTONELECTRON
+#elif PLATFORM_ID == 10
+#define PARTICLE_ELECTRON
+#define PARTICLE_PHOTONELECTRON
+#elif PLATFORM_ID == 0
+#define PARTICLE_CORE
+#endif
+
+#endif // ifdef SPARK
+
+#ifdef PARTICLE_ELECTRON
 // Class for querying information directly from the u-blox SARA modem
 
 // You will find this manual invaluable:
@@ -292,4 +312,5 @@ protected:
 
 extern CellularHelperClass CellularHelper;
 
+#endif // ifdef PARTICLE_ELECTRON
 #endif /* __CELLULARHELPER_H */
